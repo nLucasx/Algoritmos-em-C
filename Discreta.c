@@ -35,7 +35,6 @@ int main()
 		{
 			if (fat1[i] != fat2[i])
 			{
-				fat1[i] = fat2[i];
 				exp1[i] = 0;
 			}
 
@@ -52,7 +51,6 @@ int main()
 		{
 			if (fat2[i] != fat1[i])
 			{
-				fat2[i] = fat1[i];
 				exp2[i] = 0;
 			}
 
