@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-void mdc(int a, int b);
+void combinacaol(int a, int b);
 
 int main()
 {
 	int a, b;
 
 	scanf("%d%d", &a, &b);
-	mdc(a,b);
+	combinacaol(a,b);
 	return 0;
 }
-void mdc(int a, int b)
+void combinacaol(int a, int b)
 {
 	int quocientes[100000], i = 0, aux, j, r, resposta[100000], k =0, finala, finalb;
 	
