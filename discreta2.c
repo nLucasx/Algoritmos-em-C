@@ -59,4 +59,5 @@ void combinacaol(int a, int b)
 		printf("%d = (%d) * %d + (-%d) * %d", a, resposta[k-1], finala, resposta[k], finalb);	
 	}
 	printf("\n");
+	//tarefa 6 mat discreta.
 }
