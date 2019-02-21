@@ -2,21 +2,21 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-#include <limits.h>
 
 int ehprimo(int x);
 int mdc(int a, int b);
-int RSA(long int num, long int v, long int k);
 int combinacaol(long int a, long int b, int quocientes[], int resposta[]);
+int RSA(long int a, long int e, long int n);
+
 
 int main()
 {
-	long int p, q, n, d, e, totiente, i = 0, resposta1, publica1, publica2, privada1, privada2, privada3, aux, j = 0, teste1;
+	long int p, q, n, d, e, totiente, i = 0, resposta1, aux, j = 0, teste1;
 	int quocientes[100000], resposta[100000], teste2, auxd;
 	char frase[5000], caract[10];
 
 	system("clear");
-	system("setterm -foreground blue ");
+	system("setterm -foreground green ");
 	system("figlet RSA ENCRYPTION");
 
 
@@ -87,8 +87,8 @@ int main()
 	}
 	else if (resposta1 == 2)
 	{
-		printf("RSA > DIGITE AS CHAVES PUBLICAS: ");
-		scanf("%ld%ld", &publica1, &publica2);
+		printf("RSA > DIGITE AS CHAVES PUBLICAS 'n' e 'e': ");
+		scanf("%ld%ld", &n, &e);
 
 		printf("RSA > DIGITE A MENSAGEM A SER CODIFICADA: ");
 		getchar();
@@ -99,7 +99,7 @@ int main()
 		{
 			if (frase[i] != 32)
 			{	
-				printf("%d ", RSA(frase[i], publica2, publica1));
+				printf("%ld ", RSA(frase[i], e, n));
 			}
 		}
 		printf("\n"); 
@@ -108,19 +108,20 @@ int main()
 	else if (resposta1 == 3)
 	{
 		printf("DIGITE OS NUMEROS PRIMOS: ");
-		scanf("%ld%ld", &privada1, &privada2);
+		scanf("%ld%ld", &p, &q);
 		printf("DIGITE O VALOR DE d: ");
-		scanf("%ld", &privada3);
+		scanf("%ld", &d);
 		printf("DIGITE O CODIGO A SER DESCRIPTOGRAFADO: ");
-		n = privada1 * privada2;
+		n = p * q;
 		for (;;)
 		{
 			scanf("%ld", &teste1);
 			if (teste1 == -9999)
 			{
+				printf("\n");
 				break;
 			}
-			printf("%d", RSA(teste1, privada3, n));
+			printf("%c ", RSA(teste1, d, n));
 		}
 
 
@@ -171,10 +172,7 @@ int mdc(int a, int b)
 		return mdc(b, a % b);
 	}
 }
-int RSA(long int num, long int v, long int k)
-{
-	return (int)(pow(num, v)) % k;
-}
+
 int combinacaol(long int a, long int b, int quocientes[], int resposta[])
 {
 	int i = 0, aux, j, r, tam = 0;
@@ -209,4 +207,30 @@ int combinacaol(long int a, long int b, int quocientes[], int resposta[])
 	{
 		return -resposta[tam];	
 	}
+}
+int RSA(long int a, long int e, long int n){
+	
+	long long int A = a, P = 1, E = e;
+	
+	while(1){
+
+		//Chegou ao fim da expansão, retorna o P
+		if(E == 0)
+			return P;
+
+		//Se o expoente é ímpar
+		else if(E%2 != 0){
+			//Realizamos a redução módulo n de cada uma das multpilicações 			
+			P = (A * P)%n;
+			E = (E-1)/2;
+		}
+
+		//Se o expoente é par
+		else{
+			E = E/2;
+		}
+		//Obtém a sequência de potências
+		A = (A*A)%n;
+	}
+	
 }
