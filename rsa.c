@@ -17,7 +17,7 @@ int uprimo=1, produto = 0, decisao = 1;
 
 int main()
 {
-  long long int p, q, n, d, e, totiente, i = 0, aux, j = 0, codigo, primos[2];
+  long long int p, q, n, d, e, totiente, i = 0, j = 0, codigo, primos[2];
   int tamanho = 0, decodificado[100000], k, resposta1;
   char frase[100000], caract[10], alfabeto[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 
@@ -276,8 +276,6 @@ int ehprimo(int x)
 
 int mdc(int a, int b)
 {
-  int resto;
-
   if (b == 0)
   {
     return a;
@@ -290,7 +288,7 @@ int mdc(int a, int b)
 
 long long int inverso(long long int a, long long int b)
 {
-  long long int i = 0, aux, j, r, tam = 0, d = 0, totiente, quocientes[100000], resposta[100000];
+  long long int i = 0, j, r, tam = 0, d = 0, totiente, quocientes[100000], resposta[100000];
   totiente = a; // variavel recebe o valor da funcao totiente passada como parametro para nao perdermos seu valor.
 
   while (b != 0)
