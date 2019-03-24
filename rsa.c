@@ -141,8 +141,8 @@ int main()
       {  
           if (toupper(frase[i]) == alfabeto[j])  
           {  
-              fprintf(codificada, "%d ", RSA(j, e, n));
-              printf("%d ", RSA(j, e, n));
+              fprintf(codificada, "%lld ", RSA(j, e, n));
+              printf("%lld ", RSA(j, e, n));
               break;
           }
       }
