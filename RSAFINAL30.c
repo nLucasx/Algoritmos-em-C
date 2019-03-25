@@ -6,20 +6,20 @@
 
 int ehprimo(int x);
 int mdc(int a, int b);
-int combinacaol(long int a, long int b, int quocientes[], int resposta[]);
-int RSA(long long int a, long long int e, long long int n);
+long long int inverso(long long int a, long long int b);
+long long int RSA(long long int a, long long int e, long long int n);
 long int proxprime(long int numero);
-void acharprimos(long int primos [0] , long long  n);
+void acharprimos(long long int primos [] , long long  int n);
 
-long long int firstprimes [2000000];
-int uprimo=1, produto = 0, decisao = 1;
+long long int firstprimes[2000000];
+int produto = 0, decisao = 1;
 
 
 int main()
 {
-  long long int p, q, n, d, e, totiente, i = 0, aux, j = 0, codigo, primos[2];
-  int quocientes[100000], resposta[100000], teste2, tamanho = 0, decodificado[5000], k, resposta1;
-  char frase[5000], caract[10], alfabeto[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+  long long int p, q, n, d, e, totiente, i = 0, j = 0, codigo, primos[2];
+  int tamanho = 0, decodificado[100000], k, resposta1;
+  char frase[100000], caract[10], alfabeto[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 
   inicio:
   system("clear");
@@ -87,7 +87,7 @@ int main()
         }
 
       }
-      d = combinacaol(totiente, e, quocientes, resposta);
+      d = inverso(totiente, e);
 
       FILE *chaves;
       chaves = fopen("chaves.txt", "w");
@@ -123,7 +123,7 @@ int main()
 
     printf("RSA > DIGITE A MENSAGEM A SER CODIFICADA: ");
     getchar();
-    fgets(frase, 5000, stdin);
+    fgets(frase, 100000, stdin);
     
     FILE *codificada;
     
@@ -141,8 +141,8 @@ int main()
       {  
           if (toupper(frase[i]) == alfabeto[j])  
           {  
-              fprintf(codificada, "%d ", RSA(j, e, n));
-              printf("%d ", RSA(j, e, n));
+              fprintf(codificada, "%lld ", RSA(j, e, n));
+              printf("%lld ", RSA(j, e, n));
               break;
           }
       }
@@ -181,7 +181,7 @@ int main()
     printf("RSA > DIGITE O CODIGO A SER DESCRIPTOGRAFADO: ");
     n = p * q;
     totiente = (p-1) * (q-1);
-    d = combinacaol(totiente, e, quocientes, resposta);
+    d = inverso(totiente, e);
     tamanho = 0;
     decode = fopen("decode.txt", "w");
 
@@ -239,11 +239,11 @@ int main()
   }
   else if (resposta1 == 4)
   {
-    long int primos[2];
+    long long int quebrarprimos[2];
     printf("RSA > Digite a chave pública 'n': ");
     scanf("%lld", &n);
-    acharprimos(primos, n);
-    printf("%ld %ld\n", primos[0], primos[1]);
+    acharprimos(quebrarprimos, n);
+    printf("%lld %lld\n", quebrarprimos[0], quebrarprimos[1]);
 
   }
   else
@@ -276,8 +276,6 @@ int ehprimo(int x)
 
 int mdc(int a, int b)
 {
-  int resto;
-
   if (b == 0)
   {
     return a;
@@ -288,9 +286,9 @@ int mdc(int a, int b)
   }
 }
 
-int combinacaol(long int a, long int b, int quocientes[], int resposta[])
+long long int inverso(long long int a, long long int b)
 {
-  int i = 0, aux, j, r, tam = 0, d = 0, totiente;
+  long long int i = 0, j, r, tam = 0, d = 0, totiente, quocientes[100000], resposta[100000];
   totiente = a; // variavel recebe o valor da funcao totiente passada como parametro para nao perdermos seu valor.
 
   while (b != 0)
@@ -335,85 +333,64 @@ int combinacaol(long int a, long int b, int quocientes[], int resposta[])
     return d;
   }
 }
-int RSA(long long int a, long long int e, long long int n){
+long long int RSA(long long int codigo, long long int expoente, long long int modulo)
+{
   
-  long long int A = a, P = 1, E = e;
+  long long int p = 1;
   
-  while(1){
-
-    //Chegou ao fim da expansão, retorna o P
-    if(E == 0)
-      return P;
-
-    //Se o expoente é ímpar
-    else if(E%2 != 0){
-      //Realizamos a redução módulo n de cada uma das multpilicações      
-      P = (A * P)%n;
-      E = (E-1)/2;
+  while(1)
+  {
+    if(expoente == 0)
+    {
+      return p;
     }
-
-    //Se o expoente é par
-    else{
-      E = E/2;
+    else if(expoente % 2 != 0)
+    {     
+      p = (codigo * p) % modulo;
+      expoente = (expoente-1)/2;
     }
-    //Obtém a sequência de potências
-    A = (A*A)%n;
+    else
+    {
+      expoente = expoente/2;
+    }
+    codigo = (codigo * codigo) % modulo;
   }
   
 }
-long int proxprime(long int numero){
-  if(numero==2)
-  {
-    return 3;
-  }
-  else
-  {
-    long int i, notprime=1;
-    while(notprime == 1)
-    {
-      notprime=0;
-      if(decisao==1)
-      {
-        produto++;
-        numero = ((6*produto)-1);
-        decisao*=(-1);
-      }
-      else
-      {
-        numero= ((6*produto)+1);
-        decisao*=(-1);
-      }
-      for(i=0; i<uprimo && firstprimes[i] <= sqrt(numero); i++)
-      {
-        if(numero%firstprimes[i] == 0 && numero != firstprimes[i])
-        {
-          notprime= 1;
-        }
-      }
-    } 
-    if(uprimo<2000000)
-    {
-      firstprimes[uprimo]=numero;
-      uprimo++;
-    }
-    printf("%ld\n", numero);
 
-    return numero;
+void lerprimos()
+{
+  FILE *primos;
+  primos=fopen("primes1.txt", "r");
+  long long int i;
+
+  for(i=0; i<1000000; i++)
+  {
+    fscanf(primos, "%lld", &firstprimes[i]);
+    printf("%lld\n", firstprimes[i]);
   }
+  
+  fclose(primos);
+  primos=fopen("primes2.txt", "r");
+  for(;i<2000000;i++)
+  {
+    fscanf(primos, "%lld", &firstprimes[i]);
+  }
+  fclose(primos);
 }
 
-void acharprimos(long int primos [0] , long long  n){
-  primos[0]=2;
-  primos[1]=3;
-  firstprimes[0]=3;
-  
-  int prime1=0, prime2 = 1;
+void acharprimos(long long int primos [0] , long long  int n)
+{
+  lerprimos();
+  long long int prime1=0, prime2 = 1;
+  primos[0]=firstprimes[prime1];
+  primos[1]=firstprimes[prime2];
   while(primos[0]*primos[1]!=n)
   {
-    if(primos[0] * primos[1] > n)
+    if(primos[0] * primos[1] > n || prime2>=2000000)
     {
-      primos[0] = firstprimes[prime1];
       prime1++;
+      primos[0] = firstprimes[prime1];
       while(primos[0]*primos[1] > n)
       {
         prime2/=2;
@@ -423,7 +400,9 @@ void acharprimos(long int primos [0] , long long  n){
     else
     {
       prime2++;
-      primos[1] = (prime2 >= uprimo ? proxprime(primos[1]) : firstprimes[prime2]);
+      if(prime2<2000000){
+        primos[1] = firstprimes[prime2];
+      }
     }
   }
 }
