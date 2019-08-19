@@ -1,2 +1,2 @@
 # Algoritmos-em-C
-Alguns algoritmos em C, tarefas do site thehuxley.com e teorias.
+Alguns algoritmos de estudo em C
